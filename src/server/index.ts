@@ -1,9 +1,14 @@
 import Express from "express";
+import path from "path";
 
 const app = Express();
 
+const clientDir = path.join(__dirname, "../client");
+app.set("view engine", "ejs");
+app.set("views", clientDir);
+
 app.get("/", (_req, res) => {
-  res.send({ message: "hello" });
+  res.render("index.ejs");
 });
 
 const port = 8888;
