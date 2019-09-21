@@ -1,6 +1,8 @@
 import Express from "express";
 import path from "path";
 
+import { APP_HOST, APP_PORT } from "../constants";
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require("webpack");
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -24,10 +26,7 @@ app.get("/", (_req, res) => {
   res.render("index.ejs");
 });
 
-const port = 8888;
-const host = "localhost";
-
-app.listen(port, host, () => {
+app.listen(APP_PORT, APP_HOST, () => {
   // eslint-disable-next-line no-console
-  console.log(`Running on http://${host}:${port}`);
+  console.log(`Running on http://${APP_HOST}:${APP_PORT}`);
 });
