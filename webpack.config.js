@@ -1,19 +1,17 @@
-// const path = require("path");
+const path = require("path");
 // const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "development",
   entry: "./src/client/index.ts",
   devtool: "inline-source-map",
   devServer: {
-    contentBase: "./dist"
+    contentBase: path.resolve(__dirname, "src/public")
   },
   output: {
     filename: "index.js",
     publicPath: "/"
   },
-  plugins: [new HtmlWebpackPlugin()],
   module: {
     rules: [
       {

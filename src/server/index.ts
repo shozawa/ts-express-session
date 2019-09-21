@@ -1,7 +1,20 @@
 import Express from "express";
 import path from "path";
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+const webpack = require("webpack");
+// eslint-disable-next-line import/no-extraneous-dependencies
+const webpackDevMiddleware = require("webpack-dev-middleware");
+const config = require("../../webpack.config.js");
+
 const app = Express();
+const compiler = webpack(config);
+
+app.use(
+  webpackDevMiddleware(compiler, {
+    publickPath: config.output.publickPath
+  })
+);
 
 const clientDir = path.join(__dirname, "../client");
 app.set("view engine", "ejs");
