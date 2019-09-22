@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/ping", (req, res, next) => {
-  if (req.session) {
+  if (req.session && req.session.count) {
     req.session.count += 1;
     const data: Health = { message: "pong", count: req.session.count };
     res.send(data);
