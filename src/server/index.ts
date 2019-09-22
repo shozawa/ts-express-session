@@ -4,6 +4,8 @@ import path from "path";
 import { APP_HOST, APP_PORT } from "../constants";
 import { Health } from "../types/api";
 
+import session from "./session";
+
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require("webpack");
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -11,6 +13,9 @@ const webpackDevMiddleware = require("webpack-dev-middleware");
 const config = require("../../webpack.config.js");
 
 const app = Express();
+
+session(app);
+
 const compiler = webpack(config);
 
 app.use(
@@ -23,13 +28,26 @@ const clientDir = path.join(__dirname, "../client");
 app.set("view engine", "ejs");
 app.set("views", clientDir);
 
-app.get("/", (_req, res) => {
-  res.render("index.ejs", { count: 10 });
+app.use((req, _res, next) => {
+  if (req.session !== undefined) {
+    if (req.session.count === undefined || req.session.count === null) {
+      req.session.count = 0;
+    }
+  }
+  next();
 });
 
-app.get("/ping", (_req, res) => {
-  const data: Health = { message: "pong", count: 100 };
-  res.send(data);
+app.get("/", (req, res) => {
+  res.render("index.ejs", { count: req.session!.count });
+});
+
+app.get("/ping", (req, res, next) => {
+  if (req.session) {
+    req.session.count += 1;
+    const data: Health = { message: "pong", count: req.session.count };
+    res.send(data);
+  }
+  next();
 });
 
 app.listen(APP_PORT, APP_HOST, () => {
