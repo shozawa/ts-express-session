@@ -41,10 +41,10 @@ app.get("/", (req, res) => {
   res.render("index.ejs", { count: req.session!.count });
 });
 
-app.get("/ping", (req, res, next) => {
+app.get("/ping", (req, res: Express.ExResponse<Health>, next) => {
   if (req.session && req.session.count) {
     req.session.count += 1;
-    const data: Health = { message: "pong", count: req.session.count };
+    const data = { message: "pong", count: req.session.count };
     res.send(data);
   }
   next();
