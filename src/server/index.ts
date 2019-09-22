@@ -2,9 +2,9 @@ import Express from "express";
 import path from "path";
 
 import { APP_HOST, APP_PORT } from "../constants";
-import { Health } from "../types/api";
 
 import session from "./session";
+import routes from "./routes";
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require("webpack");
@@ -12,7 +12,7 @@ const webpack = require("webpack");
 const webpackDevMiddleware = require("webpack-dev-middleware");
 const config = require("../../webpack.config.js");
 
-const app: Express.Application = Express();
+const app = Express();
 
 session(app);
 
@@ -37,26 +37,7 @@ app.use((req, _res, next) => {
   next();
 });
 
-app.get("/", (req, res) => {
-  res.render("index.ejs", { count: req.session!.count });
-});
-
-app.get("/user/great/:id", (req, res, next) => {
-  const {
-    params: { id }
-  } = req;
-  res.send({ message: `Hello, ${id}` });
-  next();
-});
-
-app.get("/ping", (req, res, next) => {
-  if (req.session && req.session.count) {
-    req.session.count += 1;
-    const data = { message: "pong", count: req.session.count };
-    res.send(data);
-  }
-  next();
-});
+routes(app);
 
 app.listen(APP_PORT, APP_HOST, () => {
   // eslint-disable-next-line no-console
