@@ -5,7 +5,7 @@ export default (app: Express.Application) => {
     res.render("index.ejs", { count: req.session!.count });
   });
 
-  app.get("/user/great/:id", (req, res, next) => {
+  app.get("/user/greet/:id", (req, res, next) => {
     const {
       params: { id }
     } = req;

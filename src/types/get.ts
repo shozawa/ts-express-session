@@ -1,7 +1,7 @@
 import { Health } from "./api";
 
 export interface GET {
-  "/user/great/:id": {
+  "/user/greet/:id": {
     req: { params: { id: string } };
     res: { message: string };
   };

@@ -33,9 +33,10 @@ declare module "express" {
   }
 
   interface Application {
-    get: <P extends keyof GET>(
+    get: (<P extends keyof GET>(
       path: P,
       handler: ExRequestHandler<GET[P]>
-    ) => any & IRouterMatcher<this>;
+    ) => any) &
+      IRouterMatcher<this>;
   }
 }
